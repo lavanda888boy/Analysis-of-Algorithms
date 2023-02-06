@@ -93,7 +93,6 @@ for i in range(1, 8):
 order_number = 10
 
 matrix_args = list()
-fast_doubling_args = list()
 dynamic_args = list()
 
 for i in range(1, 6):
@@ -173,18 +172,32 @@ for i in range(1, 8):
     binet_args.append(end_time - initial_time)
     order_number += 10
 
+pyplot.figure()
+pyplot.plot(small_order_list, recursiveDP_args, color="red", label="DP recursion method")
+pyplot.plot(small_order_list, binet_args, color="blue", label="Binet's formula method")
+pyplot.title("Computing Fibonacci sequence", color="violet", fontsize=16)
+
+pyplot.legend(loc='upper right')
+
+pyplot.xlabel("n", color="violet", fontsize=14)
+pyplot.ylabel("T(millis)", color="violet", fontsize=14)
+
+pyplot.grid()
+pyplot.show()
+
+
+# plotting the slowest recursive algorithm
 order_number = 5
 recursive_args = list()
-for i in range(1, 8):
+for i in range(1, 6):
     initial_time = current_time_millis()
     recursive_fibonacci(order_number)
     end_time = current_time_millis()
     recursive_args.append(end_time - initial_time)
-    order_number += 10
+    order_number += 5
 
 pyplot.figure()
-pyplot.plot(small_order_list, recursiveDP_args, color="red", label="DP recursion method")
-pyplot.plot(small_order_list, binet_args, color="blue", label="Binet's formula method")
+pyplot.plot([5, 10, 15, 20, 25], recursive_args, color="green", label="Recursive method")
 pyplot.title("Computing Fibonacci sequence", color="violet", fontsize=16)
 
 pyplot.legend(loc='upper left')
@@ -195,4 +208,28 @@ pyplot.ylabel("T(millis)", color="violet", fontsize=14)
 pyplot.grid()
 pyplot.show()
 
+
+# plotting the fastest fast-doubling iterative algorithm
+order_number = 100
+fast_doubling_args = list()
+for i in range(1, 6):
+    initial_time = current_time_millis()
+    fast_doubling_iterative(order_number)
+    end_time = current_time_millis()
+    fast_doubling_args.append(end_time - initial_time)
+    order_number *= 10
+
+
+# plotting the results for milliseconds order
+pyplot.figure()
+pyplot.plot([10**2, 10**3, 10**4, 10**5, 10**6], dynamic_args, color="blue", label="Fast-doubling iterative method")
+pyplot.title("Computing Fibonacci sequence", color="violet", fontsize=16)
+
+pyplot.legend(loc='upper left')
+
+pyplot.xlabel("n", color="violet", fontsize=14)
+pyplot.ylabel("T(millis)", color="violet", fontsize=14)
+
+pyplot.grid()
+pyplot.show()
 
