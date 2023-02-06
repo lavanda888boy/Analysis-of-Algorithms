@@ -1,2 +1,2 @@
 # Analysis-of-Algorithms
-University laboratory works with the analysis of different algorithms.
+University laboratory works with the analysis of different algorithms (UTM year2).
