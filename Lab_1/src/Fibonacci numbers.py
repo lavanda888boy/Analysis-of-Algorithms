@@ -1,41 +1,12 @@
-#from matplotlib import pyplot
+from matplotlib import pyplot
 from math import sqrt
 from time import time
-
-order = int(input("Enter the order of the series you want to compute: "))
 
 # recursive Fibonacci sequence
 def recursive_fibonacci(n):
     if n <= 1:
         return n
     return recursive_fibonacci(n-1) + recursive_fibonacci(n-2)
-
-
-# recursion + dynamic programming
-memory = [-1 for i in range(order + 1)]
- 
-def recursiveDP_fibonacci(n):
-    if (n <= 1):
-        return n
-
-    global memory
-     
-    first = 0
-    second = 0
- 
-    if (memory[n - 1] != -1):
-        first = memory[n - 1]
-    else:
-        first = recursiveDP_fibonacci(n - 1)
-    if (memory[n - 2] != -1):
-        second = memory[n - 2]
-    else:
-        second = recursiveDP_fibonacci(n - 2)
-    
-    memory[n] = first + second
- 
-    return memory[n]
-
 
 # dynamic calculation
 def dynamic_fibonacci(n):
@@ -106,18 +77,122 @@ def current_time_millis():
     return time() * 1000
 
 
-# testing the efficinency
+# testing the efficinency of all algorithms
+order_number = 10
+order_list = list()
+for i in range(1, 6):
+    order_list.append(order_number)
+    order_number *= 10
+
+order_number = 5
+small_order_list = list()
+for i in range(1, 8):
+    small_order_list.append(order_number)
+    order_number += 10
+
+order_number = 10
+
+matrix_args = list()
+fast_doubling_args = list()
+dynamic_args = list()
+
+for i in range(1, 6):
+    initial_time = current_time_millis()
+    dynamic_fibonacci(order_number)
+    end_time = current_time_millis()
+    dynamic_args.append(end_time - initial_time)
+    order_number *= 10
+
 order_number = 10
 for i in range(1, 6):
     initial_time = current_time_millis()
-    fast_doubling_iterative(order_number)
+    matrix_fibonacci(order_number)
     end_time = current_time_millis()
-    print(end_time-initial_time)
-    print()
+    matrix_args.append(end_time - initial_time)
     order_number *= 10
 
 
+# plotting the results for milliseconds order
+pyplot.figure()
+pyplot.plot(order_list, dynamic_args, color="red", label="Dynamic method")
+pyplot.plot(order_list, matrix_args, color="blue", label="Matrix multiplication method")
+pyplot.title("Computing Fibonacci sequence", color="violet", fontsize=16)
+
+pyplot.legend(loc='upper left')
+
+pyplot.xlabel("n", color="violet", fontsize=14)
+pyplot.ylabel("T(millis)", color="violet", fontsize=14)
+
+pyplot.grid()
+pyplot.show()
 
 
+# recursion + dynamic programming
+memory = [-1 for i in range(order_number + 1)]
+ 
+def recursiveDP_fibonacci(n):
+    if (n <= 1):
+        return n
+
+    global memory
+     
+    first = 0
+    second = 0
+ 
+    if (memory[n - 1] != -1):
+        first = memory[n - 1]
+    else:
+        first = recursiveDP_fibonacci(n - 1)
+    if (memory[n - 2] != -1):
+        second = memory[n - 2]
+    else:
+        second = recursiveDP_fibonacci(n - 2)
+    
+    memory[n] = first + second
+ 
+    return memory[n]
+
+
+# plotting the results for milliseconds order
+# limited by the number of recursion calls
+order_number = 5
+recursiveDP_args = list()
+for i in range(1, 8):
+    initial_time = current_time_millis()
+    recursiveDP_fibonacci(order_number)
+    end_time = current_time_millis()
+    recursiveDP_args.append(end_time - initial_time)
+    order_number += 10
+
+order_number = 5
+binet_args = list()
+for i in range(1, 8):
+    initial_time = current_time_millis()
+    Binet_formula(order_number)
+    end_time = current_time_millis()
+    binet_args.append(end_time - initial_time)
+    order_number += 10
+
+order_number = 5
+recursive_args = list()
+for i in range(1, 8):
+    initial_time = current_time_millis()
+    recursive_fibonacci(order_number)
+    end_time = current_time_millis()
+    recursive_args.append(end_time - initial_time)
+    order_number += 10
+
+pyplot.figure()
+pyplot.plot(small_order_list, recursiveDP_args, color="red", label="DP recursion method")
+pyplot.plot(small_order_list, binet_args, color="blue", label="Binet's formula method")
+pyplot.title("Computing Fibonacci sequence", color="violet", fontsize=16)
+
+pyplot.legend(loc='upper left')
+
+pyplot.xlabel("n", color="violet", fontsize=14)
+pyplot.ylabel("T(millis)", color="violet", fontsize=14)
+
+pyplot.grid()
+pyplot.show()
 
 
