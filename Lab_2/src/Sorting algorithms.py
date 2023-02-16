@@ -101,3 +101,25 @@ def heapSort(array):
     for i in range(n - 1, 0, -1):
         (array[i], array[0]) = (array[0], array[i])
         heapify(array, i, 0)
+
+
+# function for shell sort implementation
+def shellSort(array, n):
+    gap = n // 2
+      
+    while gap > 0:
+        j = gap
+
+        while j < n:
+            i = j - gap
+              
+            while i >= 0:
+                if array[i + gap] > array[i]:
+                    break
+                else:
+                    (array[i + gap], array[i]) = (array[i], array[i + gap])
+  
+                i = i - gap
+            j += 1
+
+        gap = gap // 2
