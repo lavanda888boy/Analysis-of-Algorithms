@@ -1,4 +1,7 @@
+import numpy as np
 from random import randint
+from time import time
+from matplotlib import pyplot as plot
 
 # function to merge two sorted partition arrays 
 # and the main merge sort function itself
@@ -52,7 +55,7 @@ def mergeSort(array, lowerBound, upperBound):
 # function for finding pivot element in an array
 # and the main quick sort function      
 def partition(arr, lower, upper):
-    index = randint(0, len(arr))
+    index = randint(lower, upper)
     pivot = arr[index]
 
     i = lower - 1
@@ -77,7 +80,7 @@ def quickSort(array, lowerBound, upperBound):
 # helper function to modify heap
 # and the heap sort main function itself
 def heapify(arr, n, i):
-    largest = i
+    root = i
     left = 2 * i + 1
     right = 2 * i + 2
   
@@ -89,7 +92,7 @@ def heapify(arr, n, i):
   
     if root != i:
         (arr[i], arr[root]) = (arr[root], arr[i])
-        heapify(arr, n, largest)
+        heapify(arr, n, root)
 
   
 def heapSort(array):
@@ -123,3 +126,69 @@ def shellSort(array, n):
             j += 1
 
         gap = gap // 2
+
+
+# testing all the algorithms
+def current_time_millis():
+    return time() * 1000
+
+
+integer_constant = 1000
+size_of_array = 5000
+
+iteration_list = list()
+
+merge_list = list()
+quick_list = list()
+heap_list = list()
+shell_list = list()
+
+for index in range(0, 6):
+    iteration_list.append(size_of_array)
+
+    test_array = np.random.randint(-integer_constant, integer_constant, size=size_of_array)
+    copy_array = test_array
+
+    start_time = current_time_millis()
+    mergeSort(test_array, 0, size_of_array - 1)
+    end_time = current_time_millis()
+    merge_list.append(end_time - start_time)
+
+    copy1_array = copy_array
+
+    start_time = current_time_millis()
+    quickSort(copy_array, 0, size_of_array - 1)
+    end_time = current_time_millis()
+    quick_list.append(end_time - start_time)
+
+    copy2_array = copy1_array
+
+    start_time = current_time_millis()
+    heapSort(copy1_array)
+    end_time = current_time_millis()
+    heap_list.append(end_time - start_time)
+
+    start_time = current_time_millis()
+    shellSort(copy2_array, size_of_array)
+    end_time = current_time_millis()
+    shell_list.append(end_time - start_time)
+
+    size_of_array *= 2
+
+
+# plotting the obtained results
+plot.figure()
+
+plot.plot(iteration_list, merge_list, color="red", label="Merge sort")
+plot.plot(iteration_list, quick_list, color="blue", label="Quick sort")
+plot.plot(iteration_list, heap_list, color="green", label="Heap sort")
+plot.plot(iteration_list, shell_list, color="black", label="Shell sort")
+plot.title("Sorting algorithms", color="violet", fontsize=16)
+
+plot.legend(loc='upper left')
+
+plot.xlabel("n", color="violet", fontsize=14)
+plot.ylabel("T(millis)", color="violet", fontsize=14)
+
+plot.grid()
+plot.show()
