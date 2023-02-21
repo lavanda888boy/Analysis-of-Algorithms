@@ -152,26 +152,26 @@ for index in range(0, 6):
     start_time = current_time_millis()
     mergeSort(test_array, 0, size_of_array - 1)
     end_time = current_time_millis()
-    merge_list.append(end_time - start_time)
+    merge_list.append(round(end_time - start_time, 4))
 
     copy1_array = copy_array
 
     start_time = current_time_millis()
     quickSort(copy_array, 0, size_of_array - 1)
     end_time = current_time_millis()
-    quick_list.append(end_time - start_time)
+    quick_list.append(round(end_time - start_time, 4))
 
     copy2_array = copy1_array
 
     start_time = current_time_millis()
     heapSort(copy1_array)
     end_time = current_time_millis()
-    heap_list.append(end_time - start_time)
+    heap_list.append(round(end_time - start_time, 4))
 
     start_time = current_time_millis()
     shellSort(copy2_array, size_of_array)
     end_time = current_time_millis()
-    shell_list.append(end_time - start_time)
+    shell_list.append(round(end_time - start_time, 4))
 
     size_of_array *= 2
 
