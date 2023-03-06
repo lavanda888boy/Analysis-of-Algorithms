@@ -49,7 +49,7 @@ def alg4(n, sieve_list):
     i = 2
 
     while i <= n:
-        j = 1
+        j = 2
 
         while j < i:
             if i % j == 0:
