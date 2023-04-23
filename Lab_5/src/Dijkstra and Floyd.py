@@ -1,6 +1,6 @@
 import sys
 from random import randint
-from matplotlib.pyplot import plot
+from matplotlib import pyplot as plot
 from time import time
 
 
@@ -40,11 +40,6 @@ def Floyd_Warshall_algorithm(vertices, edges):
     num_of_vertices = len(vertices[0])
     distance = edges
 
-    for x in range(num_of_vertices - 1):
-        for y in range(num_of_vertices - 1):
-            if (vertices[x][y] == 0) and (x != y):
-                distance[x][y] = sys.maxsize
-
     for k in range(num_of_vertices):
         for i in range(num_of_vertices):
             for j in range(num_of_vertices):
@@ -59,14 +54,30 @@ sparse_coefficient = 30
 
 # function for creating a dense/sparse graph of a given size
 def generateGraph(size, coef):
-    v = random.randint(0, 1, size=(size, size))
-    e = random.randint(1, 5, size=(size, size))
+    v = list()
+    e = list()
     
     for x in range(size):
+        v.append(list())
         for y in range(size):
             if x == y:
-                v[x][y] = 0
-    print(v)
+                v[x].append(0)
+            else:
+                choice = randint(0, 100)
+                
+                if choice <= coef:
+                    v[x].append(1)
+                else:
+                    v[x].append(0)
+    
+    for x in range(size):
+        e.append(list())
+        for y in range(size):
+            if v[x][y] != 0:
+                e[x].append(randint(10, 100))
+            else:
+                e[x].append(0)
+
     return v, e
 
 
@@ -74,8 +85,15 @@ def current_time_millis():
     return time() * 1000
 
 
+def normalizeVerticesSet (n_vertices, vertices, edges):
+    for x in range(n_vertices - 1):
+        for y in range(n_vertices - 1):
+            if (vertices[x][y] == 0) and (x != y):
+                edges[x][y] = sys.maxsize
+
+
 # testing the algorithms
-input_sizes = [100, 1000, 5000, 1000, 10000, 50000]
+input_sizes = [10, 50, 100, 200]
 dijkstra_dense, dijkstra_sparse = list(), list()
 floyd_dense, floyd_sparse = list(), list()
 
@@ -90,6 +108,7 @@ for index in range(len(input_sizes)):
     end_time = current_time_millis()
 
     dijkstra_dense.append(round(end_time - start_time, 3))
+    normalizeVerticesSet(len(vertices[0]), vertices, edges)
 
     start_time = current_time_millis()
     Floyd_Warshall_algorithm(vertices, edges)
@@ -107,6 +126,7 @@ for index in range(len(input_sizes)):
     end_time = current_time_millis()
 
     dijkstra_sparse.append(round(end_time - start_time, 3))
+    normalizeVerticesSet(len(vertices[0]), vertices, edges)
 
     start_time = current_time_millis()
     Floyd_Warshall_algorithm(vertices, edges)
