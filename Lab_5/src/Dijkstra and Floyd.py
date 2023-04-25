@@ -5,7 +5,7 @@ from time import time
 
 
 # Dijkstra algorithm for the shortest path from the source
-def Dijkstra_algorithm(vertices, edges):
+def Dijkstra_algorithm(vertices, edges, source):
     
     def to_be_visited():
         v = -10
@@ -16,9 +16,9 @@ def Dijkstra_algorithm(vertices, edges):
 
     num_of_vertices = len(vertices[0])
 
-    visited_and_distance = [[0, 0]]
+    visited_and_distance = [[source, 0]]
     for i in range(num_of_vertices - 1):
-        visited_and_distance.append([0, sys.maxsize])
+        visited_and_distance.append([source, sys.maxsize])
 
     for vertex in range(num_of_vertices):
         to_visit = to_be_visited()
@@ -104,7 +104,8 @@ for index in range(len(input_sizes)):
     vertices, edges = generateGraph(input_sizes[index], dense_coefficient)
 
     start_time = current_time_millis()
-    Dijkstra_algorithm(vertices, edges)
+    for k in range(0, input_sizes[index]):
+        Dijkstra_algorithm(vertices, edges, k)
     end_time = current_time_millis()
 
     dijkstra_dense.append(round(end_time - start_time, 3))
@@ -122,7 +123,8 @@ for index in range(len(input_sizes)):
     vertices, edges = generateGraph(input_sizes[index], sparse_coefficient)
 
     start_time = current_time_millis()
-    Dijkstra_algorithm(vertices, edges)
+    for k in range(0, input_sizes[index]):
+        Dijkstra_algorithm(vertices, edges, k)
     end_time = current_time_millis()
 
     dijkstra_sparse.append(round(end_time - start_time, 3))
