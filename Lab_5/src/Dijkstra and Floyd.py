@@ -16,9 +16,12 @@ def Dijkstra_algorithm(vertices, edges, source):
 
     num_of_vertices = len(vertices[0])
 
-    visited_and_distance = [[source, 0]]
-    for i in range(num_of_vertices - 1):
-        visited_and_distance.append([source, sys.maxsize])
+    visited_and_distance = list()
+    for i in range(num_of_vertices):
+        if i != source:
+             visited_and_distance.append([0, sys.maxsize])
+        else:
+            visited_and_distance.append([0, 0])
 
     for vertex in range(num_of_vertices):
         to_visit = to_be_visited()
@@ -44,6 +47,8 @@ def Floyd_Warshall_algorithm(vertices, edges):
         for i in range(num_of_vertices):
             for j in range(num_of_vertices):
                 distance[i][j] = min(distance[i][j], distance[i][k] + distance[k][j])
+    
+    return distance
 
 
 # coefficients for defining the number of edges in a graph
