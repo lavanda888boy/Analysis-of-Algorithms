@@ -93,7 +93,7 @@ def normalizeVerticesSet (n_vertices, vertices, edges):
 
 
 # testing the algorithms
-input_sizes = [10, 50, 100, 200]
+input_sizes = [10, 50, 100, 200, 300]
 dijkstra_dense, dijkstra_sparse = list(), list()
 floyd_dense, floyd_sparse = list(), list()
 
