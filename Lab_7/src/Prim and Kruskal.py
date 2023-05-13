@@ -1,7 +1,9 @@
 import sys
 from random import randint
 from time import time
- 
+
+import matplotlib.pyplot as plot
+
 # class representing the graph iteslf which contins methods form Prim's 
 # and Kruskal's algorithms implementation
 class Graph():
@@ -38,8 +40,6 @@ class Graph():
                 if (self.graph[u][v] > 0) and (mstSet[v] == False) and (key[v] > self.graph[u][v]):
                     key[v] = self.graph[u][v]
                     parent[v] = u
- 
-        self.printMST(parent)
 
     
     # block of methods used for implementing Kruskal algorithm
@@ -89,6 +89,7 @@ class Graph():
                 self.union(parent, rank, x, y)
 
 
+# methods necessary for testing the algorithms
 def generateGraph(size, coef):
     v = list()
     e = list()
@@ -114,24 +115,66 @@ def generateGraph(size, coef):
             else:
                 e[x].append(0)
 
-    return e
+    return v, e
+
+
+def normalizeKruskalInput (edges, V):
+    graph = Graph(V)
+
+    for i in range(V - 1):
+        for j in range(i + 1, V):
+            if edges[i][j] != 0:
+                graph.addEdge(i, j, edges[i][j])
+    
+    return graph
 
 
 def current_time_millis():
     return time() * 1000
 
 
+# driver program with empirical operations themselves
 if __name__ == '__main__':
 
+    # testing the algorithms
+    input_sizes = [10, 50, 100, 200, 300]
+    prims_list = list()
+    kruskal_list = list()
+
+    start_time, end_time = 0, 0
+    coefficient = 70
+
+    # testing on dense graphs
+    for index in range(len(input_sizes)):
+        vertices, edges = generateGraph(input_sizes[index], coefficient)
+        g = Graph(input_sizes[index])
+        g.graph = edges
+
+        start_time = current_time_millis()
+        g.PrimMST()
+        end_time = current_time_millis()
+
+        prims_list.append(round(end_time - start_time, 3))
+        g = normalizeKruskalInput(edges, input_sizes[index])
+        
+        start_time = current_time_millis()
+        g.KruskalMST()
+        end_time = current_time_millis()
+        
+        kruskal_list.append(round(end_time - start_time, 3))
     
-    g = Graph(4)
- 
-    #g.primMST()
+    
+    # printing the obtained results
+    plot.figure()
 
-    g.addEdge(0, 1, 10)
-    g.addEdge(0, 2, 6)
-    g.addEdge(0, 3, 5)
-    g.addEdge(1, 3, 15)
-    g.addEdge(2, 3, 4)
+    plot.plot(input_sizes, prims_list, color="red", label="Prim's algorithm")
+    plot.plot(input_sizes, kruskal_list, color="blue", label="Kruskal's algorithm")
 
-    g.KruskalMST()
+    plot.title("MST Algorithms", color="violet", fontsize=16)
+    plot.legend(loc='upper left')
+
+    plot.xlabel("n", color="violet", fontsize=14)
+    plot.ylabel("T(millis)", color="violet", fontsize=14)
+
+    plot.grid()
+    plot.show()
