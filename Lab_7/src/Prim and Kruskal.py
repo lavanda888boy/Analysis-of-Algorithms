@@ -14,6 +14,7 @@ class Graph():
     # block of methods for implementing Prim's algorithm
     def minKey(self, key, mstSet):
         min = sys.maxsize
+        min_index = 0
  
         for v in range(self.V):
             if (key[v] < min) and (mstSet[v] == False):
@@ -138,15 +139,17 @@ if __name__ == '__main__':
 
     # testing the algorithms
     input_sizes = [10, 50, 100, 200, 300]
+    #input_sizes = [10]
     prims_list = list()
     kruskal_list = list()
 
     start_time, end_time = 0, 0
-    coefficient = 70
+    coefficient = 40
 
     # testing on dense graphs
     for index in range(len(input_sizes)):
         vertices, edges = generateGraph(input_sizes[index], coefficient)
+        edges_copy = edges
         g = Graph(input_sizes[index])
         g.graph = edges
 
@@ -155,7 +158,7 @@ if __name__ == '__main__':
         end_time = current_time_millis()
 
         prims_list.append(round(end_time - start_time, 3))
-        g = normalizeKruskalInput(edges, input_sizes[index])
+        g = normalizeKruskalInput(edges_copy, input_sizes[index])
         
         start_time = current_time_millis()
         g.KruskalMST()
@@ -163,6 +166,8 @@ if __name__ == '__main__':
         
         kruskal_list.append(round(end_time - start_time, 3))
     
+    print(prims_list)
+    print(kruskal_list)
     
     # printing the obtained results
     plot.figure()
@@ -170,7 +175,7 @@ if __name__ == '__main__':
     plot.plot(input_sizes, prims_list, color="red", label="Prim's algorithm")
     plot.plot(input_sizes, kruskal_list, color="blue", label="Kruskal's algorithm")
 
-    plot.title("MST Algorithms", color="violet", fontsize=16)
+    plot.title(f"MST Algorithms (density = {coefficient}/100)", color="violet", fontsize=16)
     plot.legend(loc='upper left')
 
     plot.xlabel("n", color="violet", fontsize=14)
