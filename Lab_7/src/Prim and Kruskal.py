@@ -119,7 +119,7 @@ def generateGraph(size, coef):
     return v, e
 
 
-def normalizeKruskalInput (edges, V):
+def normalizeKruskalInput(edges, V):
     graph = Graph(V)
 
     for i in range(V - 1):
